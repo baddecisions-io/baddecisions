@@ -11,6 +11,8 @@
       font-family: Arial, Helvetica, sans-serif;
       background: #f5f3ef;
       color: #111;
+      overflow-x: hidden;
+      position: relative;
     }
 
     a {
@@ -23,9 +25,42 @@
       text-decoration: underline;
     }
 
+    /* FLOATING LOGOS */
+    .floaters {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .floater {
+      position: absolute;
+      opacity: 0.08;
+      filter: contrast(1.1);
+      animation: float 30s infinite alternate ease-in-out;
+    }
+
+    .floater img {
+      width: 120px;
+      height: auto;
+    }
+
+    .f1 { top: 10%; left: -10%; animation-duration: 32s; transform: rotate(-10deg); }
+    .f2 { top: 60%; left: -15%; animation-duration: 36s; transform: rotate(8deg); }
+    .f3 { top: 20%; right: -12%; animation-duration: 34s; transform: rotate(-6deg); }
+    .f4 { top: 75%; right: -10%; animation-duration: 38s; transform: rotate(12deg); }
+    .f5 { top: 40%; left: 30%; animation-duration: 28s; transform: rotate(-4deg); }
+
+    @keyframes float {
+      0%   { transform: translate(0, 0) rotate(var(--r, 0deg)); }
+      100% { transform: translate(40vw, -30vh) rotate(calc(var(--r, 0deg) + 10deg)); }
+    }
+
     .header {
       text-align: center;
       padding: 40px 20px 20px;
+      position: relative;
+      z-index: 2;
     }
 
     .header h1 {
@@ -64,6 +99,8 @@
       max-width: 900px;
       margin: auto;
       padding: 20px;
+      position: relative;
+      z-index: 2;
     }
 
     .box {
@@ -124,6 +161,8 @@
       font-size: 12px;
       padding: 30px;
       color: #666;
+      position: relative;
+      z-index: 2;
     }
 
     .image-placeholder {
@@ -140,11 +179,25 @@
 
 <body>
 
+  <!-- FLOATING LOGOS -->
+  <div class="floaters">
+    <div class="floater f1"><img src="images/logo.png"></div>
+    <div class="floater f2"><img src="images/logo.png"></div>
+    <div class="floater f3"><img src="images/logo.png"></div>
+    <div class="floater f4"><img src="images/logo.png"></div>
+    <div class="floater f5"><img src="images/logo.png"></div>
+  </div>
+
   <div class="header">
     <h1>bad decisions</h1>
     <div class="sub">
       custom one-page websites for creatives  
       simple, fast, actually look like you
+    </div>
+
+    <!-- NEW URGENCY LINE -->
+    <div class="sub" style="margin-top:6px;">
+      currently taking on 3–5 projects
     </div>
 
     <div class="cta">
@@ -156,7 +209,6 @@
 
   <div class="container">
 
-    <!-- ABOUT -->
     <div class="box">
       <div class="title">what this is</div>
       simple custom one-page websites for creatives.  
@@ -164,7 +216,6 @@
       built to feel like you, not a template.
     </div>
 
-    <!-- EXAMPLE -->
     <div class="box">
       <div class="title">our work</div>
       <a href="https://imaceofclubs.github.io/aceofclubs/" target="_blank">
@@ -172,7 +223,6 @@
       </a>
     </div>
 
-    <!-- PLANS -->
     <div class="box">
       <div class="title">plans</div>
 
@@ -212,20 +262,17 @@
       </div>
     </div>
 
-    <!-- HOW IT WORKS -->
     <div class="box">
       <div class="title">how it works</div>
       <ul>
-        <li>1. dm/email us </li>
+        <li>1. dm/email us</li>
         <li>2. we send template</li>
         <li>3. you fill details</li>
         <li>4. site gets built (supa fast)</li>
         <li>5. goes live</li>
       </ul>
-      
     </div>
 
-    <!-- UPKEEP -->
     <div class="box">
       <div class="title">optional upkeep</div>
       €9.99 / month  
@@ -234,9 +281,6 @@
       </div>
     </div>
 
-    
-
-    <!-- CONTACT -->
     <div class="box">
       <div class="title">contact</div>
 
@@ -251,8 +295,6 @@
       <a href="https://www.instagram.com/by_bad_decisions/" target="_blank">
         @by_bad_decisions
       </a>
-
-      <br><br>
 
     </div>
 
