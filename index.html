@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bad decisions</title>
+  <style>
+    :root {
+      --bg: #f7f4ed;
+      --bg-2: #efe7da;
+      --panel: #fffdf8;
+      --text: #1b1b1b;
+      --muted: #5f5a52;
+      --line: #222;
+      --accent: #1ea896;
+      --accent-dark: #16786b;
+      --accent-soft: #d9f4ef;
+      --shadow: #1b1b1b;
+      --warn: #f3c94b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(30,168,150,0.10), transparent 30%),
+        linear-gradient(to bottom, var(--bg) 0%, var(--bg-2) 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      position: relative;
+      cursor: crosshair;
+    }
+
+    a {
+      color: var(--accent-dark);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      background: rgba(30,168,150,0.12);
+    }
+
+    .top-strip {
+      background: var(--line);
+      color: #fff;
+      font-size: 11px;
+      padding: 7px 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 2px solid var(--accent);
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+      z-index: 20;
+    }
+
+    .marquee {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 18s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .header {
+      background:
+        linear-gradient(135deg, var(--accent) 0%, #58c7b8 55%, #7fded1 100%);
+      color: #fff;
+      text-align: center;
+      padding: 22px 14px 18px;
+      border-bottom: 3px solid var(--line);
+      position: relative;
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    .header::before,
+    .header::after {
+      content: "";
+      position: absolute;
+      background: rgba(255,255,255,0.18);
+      border: 2px solid rgba(255,255,255,0.22);
+      transform: rotate(-8deg);
+    }
+
+    .header::before {
+      width: 90px;
+      height: 22px;
+      top: 10px;
+      left: -14px;
+    }
+
+    .header::after {
+      width: 70px;
+      height: 18px;
+      bottom: 12px;
+      right: -10px;
+      transform: rotate(12deg);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 38px;
+      line-height: 1;
+      letter-spacing: 3px;
+      text-transform: lowercase;
+    }
+
+    .header .sub {
+      margin-top: 8px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .ticker-wrap {
+      margin-top: 12px;
+      border: 2px solid var(--line);
+      background: rgba(255,255,255,0.22);
+      overflow: hidden;
+      white-space: nowrap;
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.18);
+    }
+
+    .ticker {
+      display: inline-block;
+      padding-left: 100%;
+      animation: ticker 18s linear infinite;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .nav {
+      background: var(--panel);
+      border-bottom: 2px solid var(--line);
+      text-align: center;
+      padding: 10px 8px;
+      font-size: 13px;
+      position: relative;
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 14px auto 0;
+      padding: 0 12px 28px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .box {
+      background: var(--panel);
+      border: 2px solid var(--line);
+      margin-bottom: 0;
+      box-shadow: 5px 5px 0 var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transform-origin: center;
+      border-radius: 14px;
+    }
+
+    .box::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.012) 0px,
+        rgba(0,0,0,0.012) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+    }
+
+    .box:hover {
+      transform: translate(-2px, -2px) rotate(-0.12deg);
+      box-shadow: 8px 8px 0 var(--shadow);
+      transition: 0.15s ease;
+    }
+
+    .box-title {
+      background: var(--accent-soft);
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 2px solid var(--line);
+      position: relative;
+      z-index: 4;
+    }
+
+    .box-content {
+      padding: 14px 12px;
+      font-size: 14px;
+      line-height: 1.58;
+      position: relative;
+      z-index: 4;
+    }
+
+    .mini {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status-light {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      background: #00c768;
+      border-radius: 50%;
+      margin-right: 6px;
+      box-shadow: 0 0 8px #00c768;
+      vertical-align: middle;
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+    .stamp-row,
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .stamp {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 6px 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: transform 0.15s ease, background 0.15s ease;
+      border-radius: 999px;
+    }
+
+    .stamp:hover {
+      transform: rotate(-2deg) scale(1.04);
+      background: var(--accent-soft);
+    }
+
+    .badge {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 5px 7px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      box-shadow: 2px 2px 0 var(--shadow);
+      border-radius: 8px;
+    }
+
+    .hero-note {
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .quote {
+      border-left: 4px solid var(--accent);
+      padding-left: 10px;
+      margin: 10px 0;
+      font-style: italic;
+      color: #444;
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .plan-card {
+      border: 2px solid var(--line);
+      background: #fff;
+      box-shadow: 4px 4px 0 var(--shadow);
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    .plan-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 var(--shadow);
+      transition: 0.15s ease;
+    }
+
+    .plan-head {
+      background: var(--line);
+      color: #fff;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--accent);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    .plan-head.live {
+      background: var(--accent-dark);
+    }
+
+    .plan-head.soon {
+      background: #777;
+    }
+
+    .plan-body {
+      padding: 14px;
+    }
+
+    .plan-price {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .plan-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .plan-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .plan-list li {
+      margin-bottom: 8px;
+    }
+
+    .coming-soon-overlay {
+      display: inline-block;
+      margin-top: 12px;
+      border: 2px solid var(--line);
+      background: var(--warn);
+      color: #000;
+      padding: 6px 9px;
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 2px 2px 0 var(--shadow);
+      border-radius: 8px;
+    }
+
+    .button {
+      appearance: none;
+      border: 2px solid var(--line);
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--shadow);
+      display: inline-block;
+      margin-top: 12px;
+      border-radius: 10px;
+    }
+
+    .button:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 5px 5px 0 var(--shadow);
+      background: var(--accent-dark);
+      transition: 0.12s ease;
+      text-decoration: none;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .item-list .item {
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--accent-dark);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .item-list .item:hover {
+      transform: translateX(4px);
+      background: rgba(30,168,150,0.09);
+    }
+
+    .item-list .item:last-child {
+      border-bottom: none;
+    }
+
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 18px 10px 28px;
+      border-top: 2px solid var(--accent);
+      position: relative;
+      z-index: 20;
+    }
+
+    .under-construction {
+      display: inline-block;
+      margin-top: 10px;
+      border: 2px solid var(--line);
+      background: repeating-linear-gradient(
+        45deg,
+        var(--warn) 0px,
+        var(--warn) 8px,
+        #111 8px,
+        #111 16px
+      );
+      color: #000;
+      padding: 6px 9px;
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 0 #fff;
+      border-radius: 8px;
+    }
+
+    .floaters {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .floater {
+      position: absolute;
+      user-select: none;
+      will-change: transform;
+      opacity: 0.12;
+    }
+
+    .floater img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 6px solid #fff;
+      box-shadow: 4px 4px 0 var(--shadow);
+      background: #fff;
+      border-radius: 10px;
+      filter: contrast(1.04) saturate(0.96);
+    }
+
+    .floater::before,
+    .floater::after {
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 14px;
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(0,0,0,0.1);
+      box-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+      z-index: 2;
+    }
+
+    .floater::before {
+      top: -8px;
+      left: 12px;
+      transform: rotate(-16deg);
+    }
+
+    .floater::after {
+      bottom: -8px;
+      right: 10px;
+      transform: rotate(13deg);
+    }
+
+    .floater-1 {
+      width: 150px;
+      top: 10%;
+      left: -10%;
+      animation: drift1 30s ease-in-out infinite alternate;
+      transform: rotate(-8deg);
+    }
+
+    .floater-2 {
+      width: 180px;
+      top: 60%;
+      right: -10%;
+      animation: drift2 36s ease-in-out infinite alternate;
+      transform: rotate(7deg);
+    }
+
+    .floater-3 {
+      width: 120px;
+      top: 78%;
+      left: 5%;
+      animation: drift3 28s ease-in-out infinite alternate;
+      transform: rotate(-12deg);
+    }
+
+    .floater-4 {
+      width: 165px;
+      top: 18%;
+      right: 8%;
+      animation: drift4 34s ease-in-out infinite alternate;
+      transform: rotate(10deg);
+    }
+
+    @keyframes drift1 {
+      0%   { transform: translate(0, 0) rotate(-8deg); }
+      100% { transform: translate(60vw, 45vh) rotate(5deg); }
+    }
+
+    @keyframes drift2 {
+      0%   { transform: translate(0, 0) rotate(7deg); }
+      100% { transform: translate(-68vw, -42vh) rotate(-4deg); }
+    }
+
+    @keyframes drift3 {
+      0%   { transform: translate(0, 0) rotate(-12deg); }
+      100% { transform: translate(70vw, -46vh) rotate(7deg); }
+    }
+
+    @keyframes drift4 {
+      0%   { transform: translate(0, 0) rotate(10deg); }
+      100% { transform: translate(-56vw, 48vh) rotate(-3deg); }
+    }
+
+    @media (min-width: 760px) {
+      .container {
+        padding: 0 16px 34px;
+      }
+
+      .layout {
+        grid-template-columns: 300px 1fr;
+      }
+
+      .two-col {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .plans-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .header h1 {
+        font-size: 46px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="floaters" aria-hidden="true">
+    <div class="floater floater-1"><img src="images/floater1.png" alt=""></div>
+    <div class="floater floater-2"><img src="images/floater2.png" alt=""></div>
+    <div class="floater floater-3"><img src="images/floater3.png" alt=""></div>
+    <div class="floater floater-4"><img src="images/floater4.png" alt=""></div>
+  </div>
+
+  <div class="top-strip">
+    <div class="marquee">
+      bad decisions // custom one-page websites // live hosting // built for creatives // two plans live // third plan coming soon //
+    </div>
+  </div>
+
+  <div class="header">
+    <h1>bad decisions</h1>
+    <div class="sub">custom one-page websites for creatives</div>
+    <div class="ticker-wrap">
+      <div class="ticker">
+        custom landing pages // artist sites // creative portfolios // event pages // fast turnaround // live hosting // not another boring template //
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <a href="#about">about</a>
+    <a href="#plans">plans</a>
+    <a href="#why">why this works</a>
+    <a href="#contact">contact</a>
+  </div>
+
+  <div class="container">
+    <div class="layout">
+
+      <div>
+        <div class="box">
+          <div class="box-title">what this is</div>
+          <div class="box-content">
+            <strong>bad decisions</strong><br>
+            simple custom one-page websites for creatives who want something more memorable than a plain link page.
+            <p class="mini"><span class="status-light"></span>currently taking on work</p>
+            <p class="mini">vibe: clean enough to work, rough enough to be remembered</p>
+            <p class="mini">ideal for: launches, portfolios, bios, links, releases, events, creative projects</p>
+            <div class="under-construction">two plans live now</div>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">what you get</div>
+          <div class="box-content item-list">
+            <div class="item">one custom index page</div>
+            <div class="item">mobile-friendly design</div>
+            <div class="item">links, images, embeds, sections, personality</div>
+            <div class="item">something that feels like you, not a default template</div>
+            <div class="item">live hosting</div>
+          </div>
+        </div>
+
+        <div class="box" id="contact">
+          <div class="box-title">contact</div>
+          <div class="box-content">
+            <p>to book a page, send a message with:</p>
+            <div class="item-list">
+              <div class="item">your name / project name</div>
+              <div class="item">links you want included</div>
+              <div class="item">images, artwork or logos</div>
+              <div class="item">the vibe you want</div>
+            </div>
+            <p class="mini">replace this with your real contact details</p>
+            <a class="button" href="#">book a page</a>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="box" id="about">
+          <div class="box-title">about bad decisions</div>
+          <div class="box-content hero-note">
+            bad decisions makes simple, custom one-page websites for creatives who want something with actual character.
+            the goal is to build pages that feel personal, clear, and a bit rough around the edges in a good way.
+            <div class="quote">
+              made with html & bad decisions.
+            </div>
+            <div class="stamp-row">
+              <div class="stamp">custom index pages</div>
+              <div class="stamp">creative websites</div>
+              <div class="stamp">portfolio pages</div>
+              <div class="stamp">launch pages</div>
+              <div class="stamp">not template sludge</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box" id="plans">
+          <div class="box-title">plans on offer</div>
+          <div class="box-content">
+            <div class="plans-grid">
+              <div class="plan-card">
+                <div class="plan-head live">plan 1 — starter page</div>
+                <div class="plan-body">
+                  <div class="plan-price">€€</div>
+                  <div class="plan-sub">available now</div>
+                  <ul class="plan-list">
+                    <li>one custom index page</li>
+                    <li>about / bio section</li>
+                    <li>links to socials or platforms</li>
+                    <li>image support</li>
+                    <li>basic styling + layout</li>
+                  </ul>
+                  <a class="button" href="#">enquire now</a>
+                </div>
+              </div>
+
+              <div class="plan-card">
+                <div class="plan-head live">plan 2 — full page</div>
+                <div class="plan-body">
+                  <div class="plan-price">€€€</div>
+                  <div class="plan-sub">available now</div>
+                  <ul class="plan-list">
+                    <li>everything in starter</li>
+                    <li>more custom sections</li>
+                    <li>animation / extra visual details</li>
+                    <li>more personality and styling</li>
+                    <li>designed to feel more unique</li>
+                  </ul>
+                  <a class="button" href="#">enquire now</a>
+                </div>
+              </div>
+
+              <div class="plan-card">
+                <div class="plan-head soon">plan 3 — expanded setup</div>
+                <div class="plan-body">
+                  <div class="plan-price">soon</div>
+                  <div class="plan-sub">coming soon</div>
+                  <ul class="plan-list">
+                    <li>larger project setups</li>
+                    <li>more sections or page structure</li>
+                    <li>better suited to bigger campaigns</li>
+                    <li>more scalable custom work</li>
+                    <li>for people needing more than one simple page</li>
+                  </ul>
+                  <div class="coming-soon-overlay">not available yet</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col" id="why">
+          <div class="box">
+            <div class="box-title">why this works</div>
+            <div class="box-content item-list">
+              <div class="item">people remember something with personality</div>
+              <div class="item">gives you one place to send everyone</div>
+              <div class="item">works better than a dead profile and random links</div>
+              <div class="item">simple, quick, and actually useful</div>
+              <div class="item">looks more intentional than a generic template</div>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="box-title">awards</div>
+            <div class="box-content">
+              <div class="badge-row">
+                <div class="badge">not another link page</div>
+                <div class="badge">creative friendly</div>
+                <div class="badge">personality included</div>
+                <div class="badge">fast to launch</div>
+                <div class="badge">looks like effort</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">who this is for</div>
+          <div class="box-content item-list">
+            <div class="item">producers, djs and labels</div>
+            <div class="item">photographers and designers</div>
+            <div class="item">artists, illustrators and makers</div>
+            <div class="item">small brands and side projects</div>
+            <div class="item">events, pop-ups and launches</div>
+            <div class="item">any creative with too many links and no proper home for them</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer">
+      bad decisions © 2026 // made with html & bad decisions
+    </div>
+  </div>
+
+</body>
+</html>
